@@ -1,0 +1,175 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title><ion-img src="https://iili.io/2yWw987.png" style="width: 40px; height: 40px;"></ion-img>FiapCalculator</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="welcome">
+  <ion-img src="https://iili.io/2yWw987.png" class="iconfav"></ion-img>
+  <h1>Bem vindo ao <strong>FiapCalculator</strong></h1>
+  <ion-card color="primary" (click)="openModal('temp')">
+    <ion-card-header>
+      <ion-card-title>Exercício 1</ion-card-title>
+      <ion-card-subtitle>Calculadora de temperatura</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      Elabore um App que leia uma temperatura, que pode ser em Celsius ou Fahrenheit e converta
+      para a outra unidade, conforme as fórmulas:
+      <br>Celsius para Fahrenheit: (9*C+160)/5
+      <br>Fahrenheit para Celsius: (F-32)*(5/9)
+    </ion-card-content>
+  </ion-card>
+  <ion-card color="success" class="e2" (click)="openModal('triangulo')">
+    <ion-card-header>
+      <ion-card-title>Exercício 2</ion-card-title>
+      <ion-card-subtitle>Lados de um Triângulo</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      Leia 3 valores referentes aos lados de um triângulo. Verifique se eles formam um triângulo e, se
+formar, exiba o tipo (Equilátero, Isósceles ou Escaleno). Caso não forme um triângulo, avise ao
+usuário.</ion-card-content>
+  </ion-card>
+<ion-card color="warning" class="e2" (click)="openModal('media')">
+  <ion-card-header>
+    <ion-card-title>Exercício 3</ion-card-title>
+    <ion-card-subtitle>Lados de um Triângulo</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    Elabore um APP que faça a leitura de 4 notas escolares e calcule a média. Exiba a média
+    acompanhada de uma das seguintes mensagens:
+  <br>Retido, para médias inferiores a 3;
+  <br>Recuperação, para médias entre 3 e 5.9;
+  <br>Aprovado, para média maior ou igual a 6</ion-card-content>
+</ion-card>
+</div>
+
+ <!-- Modal Exercício 1 -->
+ <ion-modal  [isOpen]="modalAbertoTemp">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Calculadora</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal('temp')">Fechar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <h2>Conversor de Temperatura</h2>
+      <ion-segment [(ngModel)]="tipoConversao">
+        <ion-segment-button value="FC">
+          <ion-label>Fahrenheit para Celsius</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="CF">
+          <ion-label>Celsius para Fahrenheit</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <div *ngIf="tipoConversao === 'FC'">
+        <ion-item>
+          <ion-label position="floating">Fahrenheit</ion-label>
+          <ion-input type="number" [(ngModel)]="f"></ion-input>
+        </ion-item>
+        <ion-button shape="round" (click)="resetar()">
+          <ion-icon name="refresh-circle">|</ion-icon>Resetar
+        </ion-button>
+       <ion-button expand="full" (click)="CF()">Converter</ion-button>
+      </div>
+
+      <div *ngIf="tipoConversao === 'CF'">
+        <ion-item>
+          <ion-label position="floating">Celsius</ion-label>
+          <ion-input type="number" [(ngModel)]="c"></ion-input>
+        </ion-item>
+        <ion-button shape="round">
+          <ion-icon name="refresh-circle">|</ion-icon> Resetar
+        </ion-button>
+        <ion-button expand="full" (click)="FC()">Converter</ion-button>
+      </div>
+
+      <p *ngIf="convertido !== 0">Resultado: {{ convertido }}</p>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<!-- Modal Exercício 2 -->
+<ion-modal [isOpen]="modalAbertoTriangulo">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Verificador de Triângulos</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal('triangulo')">Fechar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <h2>Verifique se os lados formam um triângulo</h2>
+      <ion-item>
+        <ion-label position="floating">Lado 1</ion-label>
+        <ion-input type="number" [(ngModel)]="A"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Lado 2</ion-label>
+        <ion-input type="number" [(ngModel)]="B"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Lado 3</ion-label>
+        <ion-input type="number" [(ngModel)]="C"></ion-input>
+      </ion-item>
+      <ion-button shape="round" (click)="resetar2()">
+        <ion-icon name="refresh-circle">|</ion-icon>Resetar
+      </ion-button>
+      <ion-button expand="full" (click)="trianguloVer()" (click)="tipoVer()">Verificar</ion-button>
+      <ion-label>tipo do Triângulo: {{ tipo }}<br>É um triângulo: {{ ver }}</ion-label>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<!-- Modal Exercício 3 -->
+<ion-modal [isOpen]="modalAbertoMedia">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Cálculo de Média Escolar</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal('media')">Fechar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <h2>Digite suas 4 notas</h2>
+      <ion-item>
+        <ion-label position="floating">Nota 1</ion-label>
+        <ion-input type="number" [(ngModel)]="nota1" placeholder="Insira a primeira nota aqui"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nota 2</ion-label>
+        <ion-input type="number" [(ngModel)]="nota2" placeholder="Insira a segunda nota aqui"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nota 3</ion-label>
+        <ion-input type="number" [(ngModel)]="nota3" placeholder="Insira a terceira nota aqui"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Nota 4</ion-label>
+        <ion-input type="number" [(ngModel)]="nota4" placeholder="Insira a quarta nota aqui"></ion-input>
+      </ion-item>
+      <ion-button shape="round" (click)="resetar3()">
+        <ion-icon name="refresh-circle">|</ion-icon>Resetar
+      </ion-button>
+      <ion-button expand="full" (click)="calcMedia()">Calcular Média</ion-button>
+      <p *ngIf="media !== null">Média: {{ media }} <br> Status: <strong>{{ status }}</strong></p>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+</ion-content>
+
