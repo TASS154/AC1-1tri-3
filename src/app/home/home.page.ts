@@ -7,6 +7,7 @@ import { IonModal } from '@ionic/angular';
   styleUrls: ['home.page.scss'],
   standalone: false,
 })
+
 export class HomePage {
   @ViewChild(IonModal) modal!: IonModal;
 
